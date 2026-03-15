@@ -1,5 +1,5 @@
 const { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_FUNCTION_URL } = window.APP_CONFIG;
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const form = document.getElementById("report-form");
 const messageEl = document.getElementById("message");
@@ -7,7 +7,7 @@ const reportListEl = document.getElementById("report-list");
 
 function getThisWeekMonday() {
   const now = new Date();
-  const day = now.getUTCDay(); // 与后端保持一致：UTC
+  const day = now.getUTCDay();
   const diff = day === 0 ? -6 : 1 - day;
 
   const monday = new Date(now);
@@ -26,7 +26,7 @@ function escapeHtml(text) {
 async function loadReports() {
   const weekStart = getThisWeekMonday();
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("weekly_reports")
     .select("member_name, report, created_at, updated_at, week_start")
     .eq("week_start", weekStart)
