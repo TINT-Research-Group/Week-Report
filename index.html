@@ -5,32 +5,437 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WeekReport</title>
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+    :root {
+      --bg-1: #0b1020;
+      --bg-2: #121a33;
+      --bg-3: #1d2a52;
+      --glass: rgba(255, 255, 255, 0.10);
+      --glass-strong: rgba(255, 255, 255, 0.14);
+      --border: rgba(255, 255, 255, 0.18);
+      --text: #edf2ff;
+      --muted: rgba(237, 242, 255, 0.72);
+      --accent: #b8c9ff;
+      --accent-2: #d8b4fe;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(173, 216, 255, 0.18), transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(216, 180, 254, 0.20), transparent 24%),
+        radial-gradient(circle at 50% 85%, rgba(168, 240, 209, 0.12), transparent 28%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2) 45%, var(--bg-3));
+    }
+
+    body {
+      padding: 32px 20px 40px;
+      overflow-x: hidden;
+    }
+
+    .page-shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero-banner {
+      position: relative;
+      margin-bottom: 28px;
+      padding: 36px 28px 28px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-banner::before,
+    .hero-banner::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(10px);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero-banner::before {
+      width: 220px;
+      height: 220px;
+      right: -60px;
+      top: -70px;
+      background: radial-gradient(circle, rgba(216,180,254,0.55), transparent 65%);
+    }
+
+    .hero-banner::after {
+      width: 260px;
+      height: 260px;
+      left: -80px;
+      bottom: -120px;
+      background: radial-gradient(circle, rgba(184,201,255,0.45), transparent 65%);
+    }
+
+    .hero-tag {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .hero-title {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 56px);
+      line-height: 1.06;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      background: linear-gradient(90deg, #ffffff, #cddcff 40%, #e9d5ff 78%, #ffffff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 8px 30px rgba(180, 200, 255, 0.12);
+    }
+
+    .hero-sub {
+      margin: 14px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 420px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      position: relative;
+      border-radius: 28px;
+      background: linear-gradient(180deg, var(--glass-strong), var(--glass));
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), transparent 20%, transparent 80%, rgba(255,255,255,0.04));
+      pointer-events: none;
+    }
+
+    .panel-content {
+      position: relative;
+      padding: 26px;
+      z-index: 1;
+    }
+
+    .section-kicker {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(237, 242, 255, 0.62);
+    }
+
+    .panel h1,
+    .panel h2 {
+      margin: 0 0 10px;
+      color: #ffffff;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+    }
+
+    .panel p.lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .field-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.88);
+      letter-spacing: 0.01em;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 14px 15px;
+      outline: none;
+      font-size: 14px;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(255,255,255,0.42);
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: rgba(200,220,255,0.48);
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-1px);
+    }
+
+    textarea {
+      min-height: 220px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+
+    .submit-btn {
+      width: 100%;
+      border: none;
+      border-radius: 18px;
+      padding: 14px 18px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #0e1630;
+      background: linear-gradient(135deg, #ffffff, #dbe7ff 45%, #ead7ff);
+      box-shadow: 0 12px 30px rgba(216, 180, 254, 0.20);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 36px rgba(216, 180, 254, 0.24);
+    }
+
+    #message {
+      margin-top: 14px;
+      min-height: 22px;
+      color: #f8fbff;
+      font-size: 14px;
+    }
+
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .report-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    #report-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .report-item {
+      border-radius: 22px;
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .report-item h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #ffffff;
+      letter-spacing: 0.01em;
+    }
+
+    .report-item p {
+      margin: 8px 0 0;
+      color: rgba(244, 247, 255, 0.86);
+      line-height: 1.75;
+      word-break: break-word;
+    }
+
+    .bottom-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 240px;
+      padding: 14px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.28);
+    }
+
+    .nav-btn.primary {
+      color: #0d1733;
+      background: linear-gradient(135deg, #ffffff, #dce7ff, #ead8ff);
+    }
+
+    @media (max-width: 980px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-banner {
+        padding: 30px 22px 24px;
+      }
+
+      .panel-content {
+        padding: 22px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 18px 12px 28px;
+      }
+
+      .hero-title {
+        font-size: clamp(24px, 9vw, 38px);
+      }
+
+      .nav-btn {
+        width: 100%;
+        min-width: 0;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>WeekReport System</h1>
+  <div class="page-shell">
+    <header class="hero-banner">
+      <span class="hero-tag">TINT · Weekly Flow</span>
+      <h1 class="hero-title">Pass into the Iris. Experience tranquility.</h1>
+      <p class="hero-sub">
+        A refined portal for weekly reflections, structured submissions, and collective progress.
+      </p>
+    </header>
 
-    <section class="card">
-      <h2>Submit Weekly Report</h2>
-      <form id="report-form">
-        <label for="name">Name</label>
-        <input id="name" name="name" type="text" required />
+    <main class="dashboard">
+      <section class="panel">
+        <div class="panel-content">
+          <span class="section-kicker">Submission Portal</span>
+          <h2>Submit Weekly Report</h2>
+          <p class="lead">
+            Record this week’s progress with clarity and consistency.
+          </p>
 
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" required />
+          <form id="report-form">
+            <div class="field-group">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Enter your name" required />
+            </div>
 
-        <label for="report">Report</label>
-        <textarea id="report" name="report" rows="8" required></textarea>
+            <div class="field-group">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" placeholder="Enter password" required />
+            </div>
 
-        <button type="submit">Submit</button>
-      </form>
-      <p id="message"></p>
-    </section>
+            <div class="field-group">
+              <label for="report">Report</label>
+              <textarea id="report" name="report" rows="8" placeholder="Write your weekly report here..." required></textarea>
+            </div>
 
-    <section class="card">
-      <h2>This Week's Reports</h2>
-      <div id="report-list"></div>
-    </section>
+            <button class="submit-btn" type="submit">Submit Report</button>
+          </form>
+
+          <p id="message"></p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-content">
+          <div class="report-header">
+            <div>
+              <span class="section-kicker">Weekly Archive</span>
+              <h2>This Week's Reports</h2>
+            </div>
+            <p>Live view of current weekly submissions</p>
+          </div>
+
+          <div id="report-list"></div>
+        </div>
+      </section>
+    </main>
+
+    <div class="bottom-actions">
+      <a
+        class="nav-btn primary"
+        href="https://tint-research-group.github.io/TINT-PAPER-DDL/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Go to TINT-PAPER-DDL
+      </a>
+
+      <a
+        class="nav-btn"
+        href="https://tint-research-group.github.io/Week-Report"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Go to Week-Report
+      </a>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
