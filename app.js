@@ -83,7 +83,7 @@ form.addEventListener("submit", async (e) => {
     }
 
     if (!res.ok) {
-      messageEl.textContent = result.error || "Submit failed";
+      messageEl.textContent = result.error || `Submit failed (${res.status})`;
       return;
     }
 
