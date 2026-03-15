@@ -68,7 +68,9 @@ form.addEventListener("submit", async (e) => {
     const res = await fetch(SUPABASE_FUNCTION_URL, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
       },
       body: JSON.stringify({ name, password, report })
     });
