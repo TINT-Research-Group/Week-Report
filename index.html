@@ -276,7 +276,7 @@
       display: grid;
       grid-template-columns: 420px minmax(0, 1fr);
       gap: 24px;
-      align-items: start;
+      align-items: stretch;
     }
 
     .panel {
@@ -288,6 +288,9 @@
       box-shadow: var(--shadow);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
+      height: 720px;
+      display: flex;
+      flex-direction: column;
     }
 
     .panel::before {
@@ -302,6 +305,9 @@
       position: relative;
       z-index: 1;
       padding: 26px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
 
     .section-kicker {
@@ -416,6 +422,27 @@
     #report-list {
       display: grid;
       gap: 14px;
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 8px;
+      align-content: start;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(146, 214, 255, 0.45) rgba(255,255,255,0.05);
+    }
+
+    #report-list::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #report-list::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.04);
+      border-radius: 999px;
+    }
+
+    #report-list::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, rgba(114, 242, 255, 0.72), rgba(196, 162, 255, 0.72));
+      border-radius: 999px;
     }
 
     #report-list > p {
@@ -572,6 +599,17 @@
         grid-template-columns: 1fr;
       }
 
+      .panel {
+        height: auto;
+        min-height: 0;
+      }
+
+      #report-list {
+        overflow-y: visible;
+        max-height: none;
+        padding-right: 0;
+      }
+
       .hero-banner {
         padding: 30px 22px 26px;
       }
@@ -626,7 +664,7 @@
       <span class="hero-tag">TINT · Trustworthy AI · Weekly Flow</span>
       <h1 class="hero-title">Pass into the Iris.<span class="iris-mark">Experience tranquility.</span></h1>
       <p class="hero-sub">
-        A calmer interface for rigorous weekly reporting — designed with a deep-space, trustworthy-AI research aesthetic, while preserving the existing submission workflow.
+        Intelligence is reshaping the world. We research, deploy, and simulate attacks to advance trustworthy intelligence before the real crisis arrives.
       </p>
     </header>
 
@@ -667,7 +705,7 @@
               <span class="section-kicker">Weekly Archive</span>
               <h2>Research Console</h2>
             </div>
-            <p>Telemetry stream of the current reporting cycle</p>
+            <p>Todo se puede hackear... hasta las personas.</p>
           </div>
 
           <div id="report-list"></div>
